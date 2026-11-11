@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tax-engine</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f7f7f5; --panel: #fcfcfb; --ink: #0b0b0b; --muted: #52514e; --line: #e2e1dc; --grid: #ecebe6;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --good: #1c7c3c; --bad: #c0392b; --chip: #efeee9;
+  --h0: #d5ead9; --h1: #f3d27a; --h2: #ec9a5b; --h3: #c0392b; --hm: #a9c4e8; --hn: #ecebe6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --muted: #c3c2b7; --line: #33322e; --grid: #2a2926;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --good: #5cc48a; --bad: #ec7a6d; --chip: #262523;
+    --h0: #1f4a2e; --h1: #8a6d12; --h2: #a5501f; --h3: #d9483a; --hm: #2c4a73; --hn: #262523;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --panel: #1a1a19; --ink: #f0efec; --muted: #c3c2b7; --line: #33322e; --grid: #2a2926;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --good: #5cc48a; --bad: #ec7a6d; --chip: #262523;
+  --h0: #1f4a2e; --h1: #8a6d12; --h2: #a5501f; --h3: #d9483a; --hm: #2c4a73; --hn: #262523;
+}
+* { box-sizing: border-box; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { overflow-x: hidden; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 18px 24px 6px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; }
+header h1 { font-size: 20px; margin: 0; }
+header p { margin: 0; color: var(--muted); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 24px 0; }
+nav a { padding: 6px 12px; border-radius: 6px; color: var(--ink); text-decoration: none; border: 1px solid var(--line); }
+nav a.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+main { padding: 12px 24px 40px; display: grid; gap: 14px; max-width: 1240px; }
+main > * { min-width: 0; }
+.cols { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 14px; align-items: start; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; min-width: 0; }
+.panel h2 { font-size: 15px; margin: 0 0 10px; }
+.panel h3 { font-size: 13px; margin: 14px 0 6px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; }
+.form label { display: block; color: var(--muted); font-size: 12px; }
+.form .wide { grid-column: 1 / -1; }
+select, input, button { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); max-width: 100%; }
+.form select, .form input { width: 100%; }
+button { cursor: pointer; }
+button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.lines { display: grid; gap: 6px; }
+.line { display: grid; grid-template-columns: minmax(0, 1fr) 64px 92px 32px; gap: 6px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.tile .k { color: var(--muted); font-size: 12px; }
+.tile .v { font-size: 20px; font-variant-numeric: tabular-nums; margin-top: 2px; overflow-wrap: anywhere; }
+.tile .s { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.scroll { overflow-x: auto; max-width: 100%; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: 12px; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+tr.click { cursor: pointer; } tr.click:hover td { background: var(--chip); }
+.meta { color: var(--muted); font-size: 12px; }
+.chip { display: inline-block; padding: 1px 8px; border-radius: 10px; background: var(--chip); font-size: 12px; white-space: nowrap; }
+.chip.registered { background: var(--h0); } .chip.crossed_pending_registration { background: var(--h2); }
+.chip.approaching { background: var(--h1); } .chip.expired { background: var(--h3); color: #fff; } .chip.soon { background: var(--h1); }
+.ok { color: var(--good); } .bad { color: var(--bad); }
+.note { border-left: 3px solid var(--s1); padding: 4px 10px; margin: 6px 0; overflow-wrap: anywhere; }
+.note.warn { border-color: var(--s4); }
+.bar { position: relative; height: 8px; background: var(--grid); border-radius: 4px; min-width: 70px; overflow: hidden; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s1); border-radius: 4px; }
+.bar i.over { background: var(--s3); }
+.code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
+.jur { font-size: 12px; color: var(--muted); }
+.chart svg { display: block; width: 100%; height: auto; }
+svg text { fill: var(--muted); font-size: 11px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 12px; margin-top: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: -1px; }
+.disclaimer { color: var(--muted); font-size: 12px; padding: 0 24px; }
+@media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) {
+  header, nav, main { padding-left: 16px; padding-right: 16px; }
+  .disclaimer { padding: 0 16px; }
+  .panel { padding: 12px; }
+  th, td { padding: 5px 4px; }
+  .hide-sm { display: none; }
+  .form { grid-template-columns: minmax(0, 1fr); }
+  .line { grid-template-columns: minmax(0, 1fr) 52px 76px 30px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>tax-engine</h1>
+  <p>Sales tax for Larkspur Supply Co., a made-up online retailer. Simulated year Nov 2025 to Oct 2026.</p>
+</header>
+<p class="disclaimer">All rates and rules are illustrative and made up, not current law. Not tax advice. <span id="rules"></span></p>
+<nav>
+  <a href="#calc" id="tab-calc">Cart calculator</a><a href="#nexus" id="tab-nexus">Nexus</a><a href="#returns" id="tab-returns">Returns</a><a href="#certs" id="tab-certs">Certificates</a>
+</nav>
+<main id="calc" hidden>
+  <div class="cols">
+    <section class="panel">
+      <h2>Cart</h2>
+      <div class="form">
+        <div class="wide"><label for="example">Load an example cart</label><select id="example"></select></div>
+        <div><label for="date">Order date</label><input type="date" id="date" value="2026-03-10"></div>
+        <div><label for="channel">Channel</label><select id="channel"><option value="direct">direct (our store)</option><option value="marketplace">marketplace (Bramblemart)</option></select></div>
+        <div><label for="state">Ship to state</label><select id="state"></select></div>
+        <div><label for="zip">ZIP</label><select id="zip"></select></div>
+        <div class="wide"><label for="street">Street address</label><input id="street" value="120 Main St" autocomplete="off"></div>
+        <div><label for="customer">Customer</label><select id="customer"></select></div>
+        <div><label for="nexusmode">Nexus</label><select id="nexusmode"><option value="simulated">registrations from the simulation</option><option value="all">assume registered everywhere</option></select></div>
+        <div><label for="shipping">Shipping ($)</label><input id="shipping" type="number" min="0" step="0.01" value="6.99"></div>
+        <div><label for="handling">Handling ($)</label><input id="handling" type="number" min="0" step="0.01" value="0"></div>
+      </div>
+      <h3>Lines</h3>
+      <div class="lines" id="lines"></div>
+      <div class="row" style="margin-top:10px"><button id="addline">Add line</button><button class="primary" id="go">Calculate tax</button></div>
+      <div class="meta" id="lookupnote" style="margin-top:10px"></div>
+    </section>
+    <section class="panel" id="result"><h2>Result</h2><p class="meta">Calculate a cart to see the breakdown.</p></section>
+  </div>
+</main>
+<main id="nexus" hidden>
+  <section class="panel"><div class="tiles" id="ntiles"></div></section>
+  <section class="panel"><h2>Threshold crossings during the year</h2><div class="chart" id="ntimeline"></div>
+    <div class="legend"><span><i class="sw" style="background:var(--s2)"></i>crossed</span><span><i class="sw" style="background:var(--s3)"></i>collection starts</span></div></section>
+  <section class="panel"><h2>Economic nexus by state, trailing 12 months as of <span id="nasof"></span></h2>
+    <div class="meta">Bars show trailing sales and transactions against the state threshold. Thresholds are illustrative.</div>
+    <div class="scroll" id="ntable"></div></section>
+  <section class="panel"><h2>Alerts</h2><div class="scroll" id="nalerts"></div></section>
+</main>
+<main id="returns" hidden>
+  <section class="panel"><div class="tiles" id="rtiles"></div>
+    <p class="meta">Tax due is recomputed from the taxable base at the correct rate for each day and rounded once per jurisdiction. The difference from tax collected comes from invoice rounding and a city rate change that reached the production rate table a week late.</p></section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Returns for the period containing</h2><select id="rmonth" aria-label="Month"></select></div>
+    <div class="scroll" id="rtable"></div>
+  </section>
+  <section class="panel" id="rdetail" hidden></section>
+</main>
+<main id="certs" hidden>
+  <section class="panel"><div class="tiles" id="ctiles"></div></section>
+  <section class="panel">
+    <div class="row" style="justify-content:space-between"><h2>Exemption certificates</h2>
+      <select id="cfilter" aria-label="Filter"><option value="">all</option><option value="warn">expired or expiring</option><option value="notvalid">not validated</option></select></div>
+    <div class="scroll" id="ctable"></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const money = (c) => (c < 0 ? "-" : "") + "$" + (Math.abs(c) / 100).toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const short = (c) => { const d = Math.abs(c) / 100, s = c < 0 ? "-" : ""; return s + "$" + (d >= 1e6 ? (d / 1e6).toFixed(2) + "M" : d >= 1e4 ? (d / 1e3).toFixed(1) + "k" : d.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2})); };
+const get = async (u) => { const r = await fetch(u); if (!r.ok) throw new Error(u + " " + r.status); return r.json(); };
+const post = async (u, body) => { const r = await fetch(u, {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify(body)}); const j = await r.json(); if (!r.ok) throw new Error(j.message || r.status); return j; };
+const table = (cols, rows, rowAttr) => `<table><thead><tr>${cols.map(c => `<th class="${c.n ? "num" : ""} ${c.sm ? "hide-sm" : ""}">${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr ${rowAttr ? rowAttr(r) : ""}>${cols.map(c => `<td class="${c.n ? "num" : ""} ${c.sm ? "hide-sm" : ""}">${c.f(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const tile = (k, v, s = "") => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+const bar = (pct) => pct == null ? `<span class="meta">n/a</span>` : `<div class="bar" title="${pct}%"><i class="${pct >= 100 ? "over" : ""}" style="width:${Math.min(pct, 100)}%"></i></div><div class="meta">${pct}%</div>`;
+const STATUS = {registered: "registered", crossed_pending_registration: "crossed, register", approaching: "approaching", below: "below", no_sales_tax: "no sales tax"};
+let META = null;
+const loaded = {};
+
+function lineRow(l = {sku: "LAMP-01", qty: 1}) {
+  const div = document.createElement("div");
+  div.className = "line";
+  div.innerHTML = `<select aria-label="Product">${META.products.map(p => `<option value="${p.sku}">${esc(p.name)} (${p.tax_code}) ${money(p.price)}</option>`).join("")}</select>
+    <input type="number" min="1" value="${l.qty}" aria-label="Quantity"><input type="number" min="0" step="0.01" placeholder="price" aria-label="Unit price override" value="${l.price != null ? (l.price / 100).toFixed(2) : ""}"><button aria-label="Remove line">x</button>`;
+  div.querySelector("select").value = l.sku;
+  div.querySelector("button").onclick = () => div.remove();
+  $("lines").appendChild(div);
+}
+
+function fillZips(zip) {
+  const st = META.states.find(s => s.code === $("state").value);
+  $("zip").innerHTML = st.zips.map(z => `<option>${z}</option>`).join("");
+  if (zip) $("zip").value = zip;
+}
+
+async function loadExample(id) {
+  const c = await get(`/v1/examples/${id}`);
+  $("date").value = c.date; $("channel").value = c.channel; $("state").value = c.ship_to.state; fillZips(c.ship_to.zip);
+  $("street").value = c.ship_to.street; $("customer").value = c.customer_id || ""; $("nexusmode").value = "all";
+  $("shipping").value = (c.shipping / 100).toFixed(2); $("handling").value = (c.handling / 100).toFixed(2);
+  $("lines").innerHTML = ""; c.lines.forEach(lineRow);
+  await calculate();
+}
+
+async function calcView() {
+  if (!loaded.calc) {
+    $("example").innerHTML = `<option value="">choose...</option>` + META.examples.map(e => `<option value="${e.id}">${e.id}: ${esc(e.why)}</option>`).join("");
+    $("example").onchange = () => $("example").value && loadExample($("example").value);
+    $("state").innerHTML = META.states.map(s => `<option value="${s.code}">${s.code} ${esc(s.name)}</option>`).join("");
+    $("state").value = "NY"; fillZips("10002"); $("state").onchange = () => fillZips();
+    const certs = (await get("/v1/certificates")).certificates;
+    const seen = new Set();
+    $("customer").innerHTML = `<option value="">consumer (no certificate)</option><option value="G1">G1 Harbor Outfitters (golden resale cert)</option>` +
+      certs.filter(c => !seen.has(c.customer_id) && seen.add(c.customer_id)).map(c => `<option value="${c.customer_id}">${c.customer_id} ${esc(c.customer_name)} (${c.type}, ${c.states.join(" ")})</option>`).join("");
+    [{sku: "COAT-01", qty: 1}, {sku: "TEE-01", qty: 2}, {sku: "SAAS-STOR", qty: 1}, {sku: "RX-REFILL", qty: 1}].forEach(lineRow);
+    $("addline").onclick = () => lineRow();
+    $("go").onclick = calculate;
+    loaded.calc = true;
+    const want = new URLSearchParams(location.search).get("example");
+    if (want) return loadExample(want);
+    await calculate();
+  }
+}
+
+async function calculate() {
+  const lines = [...$("lines").children].map((d, i) => { const [s, q, p] = d.querySelectorAll("select, input"); const l = {sku: s.value, qty: +q.value || 1, id: "L" + (i + 1)}; if (p.value !== "") l.price = Math.round(+p.value * 100); return l; });
+  const body = {date: $("date").value, channel: $("channel").value, ship_to: {state: $("state").value, zip: $("zip").value, street: $("street").value},
+    customer_id: $("customer").value || null, nexus: $("nexusmode").value, lines,
+    shipping: Math.round(+$("shipping").value * 100), handling: Math.round(+$("handling").value * 100)};
+  try {
+    const [r, lk] = await Promise.all([post("/v1/tax/calculate", body), get(`/v1/lookup?state=${body.ship_to.state}&zip=${body.ship_to.zip}&street=${encodeURIComponent(body.ship_to.street)}&on=${body.date}`)]);
+    $("lookupnote").innerHTML = lk.differs_from_zip_only
+      ? `<div class="note warn">Split ZIP: street-level lookup gives ${lk.combined_rate}; ZIP-only lookup would give ${lk.zip_only.combined_rate}. ${esc(lk.override)}.</div>`
+      : `ZIP ${lk.zip}: ${lk.combined_rate} combined (${lk.method}).`;
+    renderResult(r);
+  } catch (e) { $("result").innerHTML = `<h2>Result</h2><p class="bad">${esc(e.message)}</p>`; }
+}
+
+function renderResult(r) {
+  const s = r.sourcing, v = r.rule_versions;
+  const effRate = r.subtotal ? (100 * r.tax / r.subtotal).toFixed(2) + "% of subtotal" : "";
+  $("result").innerHTML = `<h2>Result: cart ${esc(r.cart_id)}</h2>
+    <div class="tiles">${tile("Subtotal", money(r.subtotal))}${tile("Tax", money(r.tax), effRate)}${tile("Total", money(r.total))}${tile("Collected by", r.collector, r.collector_code)}</div>
+    <h3>Why</h3>
+    <div class="note">Sourcing: ${esc(s.rule)}. ${esc(s.why)}. Address lookup by ${esc(s.lookup)}.${s.override ? ` ${esc(s.override)}; ZIP-only would have used ${s.zip_only_jurisdictions.join(", ")}.` : ""}</div>
+    ${r.notes.map(n => `<div class="note warn">${esc(n)}</div>`).join("")}
+    <div class="note">Rounding: ${esc(r.rounding)}. ${esc(r.rounding_note)}.</div>
+    <h3>Lines</h3>
+    <div class="scroll">${table([
+      {h: "Line", f: l => `${esc(l.name)}<div class="meta">${l.qty} x ${money(l.unit_price)} (${l.tax_code})</div>`},
+      {h: "Rule", f: l => `<span class="code">${esc(l.rule_code)}</span><div class="meta">${esc(l.rule)}</div>`},
+      {h: "Taxable", n: 1, f: l => money(l.taxable_amount)},
+      {h: "Jurisdictions", sm: 1, f: l => l.jurisdictions.filter(j => j.applies).map(j => `<div class="jur">${esc(j.name)} ${j.rate}: ${money(j.tax)}</div>`).join("") || `<span class="meta">none</span>`},
+      {h: "Tax", n: 1, f: l => money(l.tax)},
+    ], r.lines)}</div>
+    <h3>By jurisdiction</h3>
+    <div class="scroll">${table([
+      {h: "Jurisdiction", f: j => `${esc(j.name)}<div class="meta">${j.id}</div>`}, {h: "Type", sm: 1, f: j => j.kind},
+      {h: "Rate", n: 1, f: j => j.rate}, {h: "Taxable", n: 1, sm: 1, f: j => money(j.taxable_amount)}, {h: "Tax", n: 1, f: j => money(j.tax)},
+    ], r.jurisdictions)}</div>
+    <p class="meta">Rules ${esc(v.ruleset)} (fingerprint ${esc(v.fingerprint)}), state rule ${esc(v.state_rule)}, rates effective ${Object.entries(v.rates).map(([k, d]) => `${k} ${d}`).join(", ")}. Audit log row ${r.audit_seq}.</p>`;
+}
+
+async function nexusView() {
+  if (loaded.nexus) return;
+  const d = await get("/v1/nexus");
+  loaded.nexus = true;
+  $("nasof").textContent = d.as_of;
+  const c = d.counts;
+  $("ntiles").innerHTML = tile("Registered", c.registered || 0, "collecting tax") + tile("Crossed in the year", d.crossed_in_period, "states that crossed a threshold") +
+    tile("Crossed, registration pending", c.crossed_pending_registration || 0, "collection date set") + tile("Approaching", c.approaching || 0, "80% of a threshold") +
+    tile("Below", c.below || 0, "") + tile("No sales tax", c.no_sales_tax || 0, "tracked anyway");
+  drawTimeline(d.states.filter(s => s.crossed_on && s.crossed_on >= META.period.start && s.status !== "no_sales_tax"));
+  $("ntable").innerHTML = table([
+    {h: "State", f: s => `<b>${s.state}</b><div class="meta">${esc(s.name)}</div>`},
+    {h: "Status", f: s => `<span class="chip ${s.status}">${STATUS[s.status]}</span>`},
+    {h: "Threshold", sm: 1, f: s => `$${s.threshold_usd.toLocaleString()}${s.threshold_txns ? ` ${s.threshold_mode} ${s.threshold_txns} txns` : ""}`},
+    {h: "Sales", f: s => `${short(s.trailing_sales)}${bar(s.sales_pct)}`},
+    {h: "Transactions", f: s => `${s.trailing_txns.toLocaleString()}${s.threshold_txns ? bar(s.txns_pct) : `<div class="meta">no count test</div>`}`},
+    {h: "Crossed", f: s => s.crossed_on ? `${s.crossed_on}<div class="meta">by ${s.crossed_by}</div>` : "-"},
+    {h: "Collect from", f: s => s.collection_start ? `${s.collection_start}<div class="meta">${esc((s.reason || "").split(":")[0])}</div>` : "-"},
+  ], d.states);
+  $("nalerts").innerHTML = table([{h: "Date", f: a => a.date}, {h: "State", f: a => a.state}, {h: "Kind", f: a => `<span class="chip ${a.kind === "crossed" ? "crossed_pending_registration" : "approaching"}">${a.kind}</span>`}, {h: "Message", f: a => esc(a.message)}], d.alerts.slice().reverse());
+}
+
+function drawTimeline(states) {
+  states.sort((a, b) => a.crossed_on.localeCompare(b.crossed_on));
+  const t0 = Date.parse(META.period.start), t1 = Date.parse("2027-01-31");
+  const W = 760, L = 40, R = 12, rowH = 18, T = 8, B = 26, H = T + B + rowH * states.length;
+  const x = (d) => L + (W - L - R) * (Date.parse(d) - t0) / (t1 - t0);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Nexus crossing timeline">`;
+  for (let m = 0; m <= 15; m++) { const d = new Date(Date.UTC(2025, 10 + m, 1)); const xx = x(d.toISOString().slice(0, 10)); s += `<line x1="${xx}" x2="${xx}" y1="${T}" y2="${H - B}" stroke="var(--grid)"/>${m % 2 === 0 ? `<text x="${xx}" y="${H - 8}" text-anchor="middle">${d.toISOString().slice(2, 7)}</text>` : ""}`; }
+  const end = x(META.period.end); s += `<line x1="${end}" x2="${end}" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+  states.forEach((st, i) => {
+    const yy = T + i * rowH + rowH / 2, a = x(st.crossed_on), b = x(st.collection_start);
+    s += `<text x="${L - 6}" y="${yy + 4}" text-anchor="end">${st.state}</text><line x1="${a}" x2="${b}" y1="${yy}" y2="${yy}" stroke="var(--muted)" stroke-width="2"/>
+      <circle cx="${a}" cy="${yy}" r="5" fill="var(--s2)"><title>${st.state} crossed ${st.crossed_on} by ${st.crossed_by}</title></circle>
+      <circle cx="${b}" cy="${yy}" r="5" fill="var(--s3)"><title>${st.state} collects from ${st.collection_start}</title></circle>`;
+  });
+  $("ntimeline").innerHTML = s + "</svg>";
+}
+
+async function returnsView() {
+  if (!loaded.returns) {
+    $("rmonth").innerHTML = META.period.months.map(m => `<option>${m}</option>`).join("");
+    $("rmonth").value = "2026-09"; $("rmonth").onchange = renderReturns;
+    const rec = await get("/v1/reconciliation");
+    $("rtiles").innerHTML = tile("Net tax collected, year", short(rec.net_tax_collected), `${rec.periods} state filing periods`) + tile("Tax due on returns", short(rec.tax_due)) +
+      tile("Difference", money(rec.difference), "due minus collected") + tile("Rate table lag", money(rec.rate_lag), "under-collected") + tile("Rounding", money(rec.rounding), "invoice vs return");
+    loaded.returns = true;
+  }
+  await renderReturns();
+}
+
+async function renderReturns() {
+  const d = await get(`/v1/returns?month=${$("rmonth").value}`);
+  $("rtable").innerHTML = table([
+    {h: "State", f: r => `<b>${r.state}</b>`}, {h: "Period", f: r => `${r.period}${r.complete ? "" : ` <span class="chip">partial</span>`}`}, {h: "Due", sm: 1, f: r => r.due_date},
+    {h: "Orders", n: 1, sm: 1, f: r => r.orders.toLocaleString()}, {h: "Gross sales", n: 1, sm: 1, f: r => short(r.gross_sales)}, {h: "Refunds", n: 1, sm: 1, f: r => short(r.refund_sales)},
+    {h: "Net collected", n: 1, f: r => money(r.net_tax_collected)}, {h: "Tax due", n: 1, f: r => money(r.tax_due)},
+    {h: "Diff", n: 1, f: r => `<span class="${r.difference > 100 ? "bad" : ""}">${money(r.difference)}</span>`},
+  ], d.returns, r => `class="click" data-st="${r.state}" data-p="${r.period}"`) + `<p class="meta">${d.count} returns; net collected ${money(d.net_tax_collected)}, due ${money(d.tax_due)}. Click a row for the jurisdiction detail and export.</p>`;
+  $("rtable").querySelectorAll("tr.click").forEach(tr => tr.onclick = () => renderDetail(tr.dataset.st, tr.dataset.p));
+}
+
+async function renderDetail(st, p) {
+  const r = await get(`/v1/returns/${st}/${p}`);
+  const el = $("rdetail"); el.hidden = false;
+  el.innerHTML = `<div class="row" style="justify-content:space-between"><h2>${st} return, ${p} (${r.frequency}, due ${r.due_date})</h2><a href="/v1/returns/${st}/${p}?format=csv">Download export CSV</a></div>
+    <div class="tiles">${tile("Gross sales", short(r.gross_sales), `${r.orders} orders`)}${tile("Refunds netted", short(r.refund_sales), `${r.refunds} refunds, tax ${money(r.refund_tax)}`)}${tile("Taxable sales", short(r.taxable_sales))}${tile("Net collected", money(r.net_tax_collected))}${tile("Tax due", money(r.tax_due), `diff ${money(r.difference)}`)}</div>
+    <div class="scroll" style="margin-top:10px">${table([
+      {h: "Jurisdiction", f: j => `${esc(j.name)}<div class="meta">${j.id}</div>`}, {h: "Rate", n: 1, f: j => j.rate}, {h: "Taxable (net)", n: 1, sm: 1, f: j => money(j.taxable)},
+      {h: "Collected (net)", n: 1, f: j => money(j.collected)}, {h: "Due", n: 1, f: j => money(j.due)}, {h: "Lag", n: 1, sm: 1, f: j => money(j.rate_lag)}, {h: "Rounding", n: 1, sm: 1, f: j => money(j.rounding)},
+    ], r.jurisdictions)}</div>`;
+  el.scrollIntoView({behavior: "smooth", block: "start"});
+}
+
+async function certsView() {
+  const d = await get("/v1/certificates");
+  const f = $("cfilter").value;
+  const rows = d.certificates.filter(c => !f || (f === "warn" ? c.warning : c.status !== "valid"));
+  rows.sort((a, b) => (a.days_to_expiry - b.days_to_expiry));
+  $("ctiles").innerHTML = tile("Certificates", d.count) + tile("Expired", d.expired, "sales are taxed again") + tile("Expiring in 60 days", d.expiring_60d, "request renewal") +
+    tile("Not validated", d.certificates.filter(c => c.status !== "valid").length, "pending, rejected or revoked");
+  $("ctable").innerHTML = table([
+    {h: "Certificate", f: c => `${c.id}<div class="meta">${esc(c.number)}</div>`}, {h: "Customer", f: c => `${esc(c.customer_name)}<div class="meta">${c.customer_id}</div>`},
+    {h: "Type", f: c => c.type}, {h: "States", sm: 1, f: c => c.states.join(" ")}, {h: "Status", f: c => `<span class="chip ${c.status === "valid" ? "registered" : "approaching"}">${c.status}</span>`},
+    {h: "Expires", f: c => `${c.expires}${c.warning ? `<div><span class="chip ${c.warning === "expired" ? "expired" : "soon"}">${c.warning}</span></div>` : ""}`},
+  ], rows) + `<p class="meta">As of ${d.as_of}. A certificate exempts a sale only if it is valid, covers the ship-to state, is in date, and the state accepts its type.</p>`;
+  if (!loaded.certs) { $("cfilter").onchange = certsView; loaded.certs = true; }
+}
+
+const VIEWS = {calc: calcView, nexus: nexusView, returns: returnsView, certs: certsView};
+async function route() {
+  const v = (location.hash || "#calc").slice(1);
+  const name = VIEWS[v] ? v : "calc";
+  for (const k of Object.keys(VIEWS)) { $(k).hidden = k !== name; $("tab-" + k).classList.toggle("on", k === name); }
+  try { await VIEWS[name](); } catch (e) { console.error(e); }
+}
+(async () => {
+  META = await get("/v1/meta");
+  $("rules").textContent = `Rule set ${META.ruleset} (${META.fingerprint}).`;
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2114 @@
+{
+ "ruleset": "illustrative-2026.11-r4",
+ "fingerprint": "36fdb659a8e67d62",
+ "note": "Illustrative rules, not current law.",
+ "carts": [
+  {
+   "id": "G01",
+   "why": "NY clothing under the per item threshold is exempt",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NY",
+    "zip": "10001"
+   },
+   "lines": [
+    {
+     "sku": "TEE-01",
+     "qty": 3
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CLOTH.UNDER_THRESHOLD"
+    ]
+   }
+  },
+  {
+   "id": "G02",
+   "why": "NY clothing at or over the threshold is fully taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NY",
+    "zip": "10001"
+   },
+   "lines": [
+    {
+     "sku": "COAT-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2459,
+    "collector": "seller",
+    "lines": {
+     "L1": 2459
+    },
+    "rules": [
+     "CLOTH.OVER_THRESHOLD"
+    ]
+   }
+  },
+  {
+   "id": "G03",
+   "why": "NY threshold edge: exactly $110.00 is taxable, $109.99 is not",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NY",
+    "zip": "10001"
+   },
+   "lines": [
+    {
+     "sku": "SHOE-01",
+     "qty": 1,
+     "price": 11000
+    },
+    {
+     "sku": "SHOE-01",
+     "qty": 1,
+     "price": 10999
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 1086,
+    "collector": "seller",
+    "lines": {
+     "L1": 1086,
+     "L2": 0
+    },
+    "rules": [
+     "CLOTH.OVER_THRESHOLD",
+     "CLOTH.UNDER_THRESHOLD"
+    ]
+   }
+  },
+  {
+   "id": "G04",
+   "why": "RI clothing threshold is higher",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "RI",
+    "zip": "02801"
+   },
+   "lines": [
+    {
+     "sku": "JKT-01",
+     "qty": 1
+    },
+    {
+     "sku": "COAT-01",
+     "qty": 1,
+     "price": 26000
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 1495,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 1495
+    },
+    "rules": [
+     "CLOTH.UNDER_THRESHOLD",
+     "CLOTH.OVER_THRESHOLD"
+    ]
+   }
+  },
+  {
+   "id": "G05",
+   "why": "MA taxes only the part of an item over the threshold",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MA",
+    "zip": "02101"
+   },
+   "lines": [
+    {
+     "sku": "COAT-01",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 925,
+    "collector": "seller",
+    "lines": {
+     "L1": 925
+    },
+    "rules": [
+     "CLOTH.EXCESS_TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G06",
+   "why": "MA item under the threshold is exempt",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MA",
+    "zip": "02101"
+   },
+   "lines": [
+    {
+     "sku": "JEAN-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CLOTH.UNDER_THRESHOLD"
+    ]
+   }
+  },
+  {
+   "id": "G07",
+   "why": "PA clothing is exempt",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "PA",
+    "zip": "15001"
+   },
+   "lines": [
+    {
+     "sku": "COAT-01",
+     "qty": 1
+    },
+    {
+     "sku": "LAMP-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 300,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 300
+    },
+    "rules": [
+     "CLOTH.EXEMPT",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G08",
+   "why": "NY split ZIP: Main St 120 is inside the other city and the transit district",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "120 Main St",
+    "state": "NY",
+    "zip": "10002"
+   },
+   "lines": [
+    {
+     "sku": "SPKR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 790,
+    "collector": "seller",
+    "lines": {
+     "L1": 790
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G09",
+   "why": "NY split ZIP: Main St 1500 is outside the override range",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "1500 Main St",
+    "state": "NY",
+    "zip": "10002"
+   },
+   "lines": [
+    {
+     "sku": "SPKR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 680,
+    "collector": "seller",
+    "lines": {
+     "L1": 680
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G10",
+   "why": "CO split ZIP: Harbor Rd 700 was annexed",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "700 Harbor Road",
+    "state": "CO",
+    "zip": "80005"
+   },
+   "lines": [
+    {
+     "sku": "DESK-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 3176,
+    "collector": "seller",
+    "lines": {
+     "L1": 3176
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G11",
+   "why": "TX origin sourcing: in-state sale uses the Dallas warehouse rates",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "9 Mill St",
+    "state": "TX",
+    "zip": "75004"
+   },
+   "lines": [
+    {
+     "sku": "LAMP-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 370,
+    "collector": "seller",
+    "lines": {
+     "L1": 370
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G12",
+   "why": "PA before the PA warehouse opens: ships from TX, destination rates",
+   "date": "2026-04-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "PA",
+    "zip": "15001"
+   },
+   "lines": [
+    {
+     "sku": "SPKR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 600,
+    "collector": "seller",
+    "lines": {
+     "L1": 600
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G13",
+   "why": "PA after the PA warehouse opens: origin rates",
+   "date": "2026-06-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "PA",
+    "zip": "15001"
+   },
+   "lines": [
+    {
+     "sku": "SPKR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 508,
+    "collector": "seller",
+    "lines": {
+     "L1": 508
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G14",
+   "why": "CA invoice rounding over many small lines",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CA",
+    "zip": "90001"
+   },
+   "lines": [
+    {
+     "sku": "PENS-12",
+     "qty": 1
+    },
+    {
+     "sku": "NOTE-03",
+     "qty": 1
+    },
+    {
+     "sku": "FLSH-01",
+     "qty": 1
+    },
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    },
+    {
+     "sku": "LAMP-01",
+     "qty": 1,
+     "price": 3333
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 1163,
+    "collector": "seller",
+    "lines": {
+     "L1": 68,
+     "L2": 87,
+     "L3": 243,
+     "L4": 440,
+     "L5": 325
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G15",
+   "why": "TX line rounding, same lines as G14",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "TX",
+    "zip": "75001"
+   },
+   "lines": [
+    {
+     "sku": "PENS-12",
+     "qty": 1
+    },
+    {
+     "sku": "NOTE-03",
+     "qty": 1
+    },
+    {
+     "sku": "FLSH-01",
+     "qty": 1
+    },
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    },
+    {
+     "sku": "LAMP-01",
+     "qty": 1,
+     "price": 3333
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": "TX-DAL",
+   "expected": {
+    "tax": 1103,
+    "collector": "seller",
+    "lines": {
+     "L1": 65,
+     "L2": 83,
+     "L3": 231,
+     "L4": 416,
+     "L5": 308
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G16",
+   "why": "IL groceries at the reduced state rate, locals in full",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "IL",
+    "zip": "60601"
+   },
+   "lines": [
+    {
+     "sku": "COFF-2",
+     "qty": 2
+    },
+    {
+     "sku": "OIL-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 297,
+    "collector": "seller",
+    "lines": {
+     "L1": 216,
+     "L2": 81
+    },
+    "rules": [
+     "GROC.REDUCED",
+     "GROC.REDUCED"
+    ]
+   }
+  },
+  {
+   "id": "G17",
+   "why": "MS groceries fully taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MS",
+    "zip": "38604"
+   },
+   "lines": [
+    {
+     "sku": "GRAN-04",
+     "qty": 3
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 293,
+    "collector": "seller",
+    "lines": {
+     "L1": 293
+    },
+    "rules": [
+     "GROC.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G18",
+   "why": "UT groceries reduced (destination: ships from TX)",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "UT",
+    "zip": "84004"
+   },
+   "lines": [
+    {
+     "sku": "COFF-2",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 86,
+    "collector": "seller",
+    "lines": {
+     "L1": 86
+    },
+    "rules": [
+     "GROC.REDUCED"
+    ]
+   }
+  },
+  {
+   "id": "G19",
+   "why": "Prescriptions exempt everywhere",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CA",
+    "zip": "90001"
+   },
+   "lines": [
+    {
+     "sku": "RX-REFILL",
+     "qty": 2
+    },
+    {
+     "sku": "RX-PEN",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 0
+    },
+    "rules": [
+     "RX.EXEMPT",
+     "RX.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G20",
+   "why": "CA digital downloads exempt",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CA",
+    "zip": "90001"
+   },
+   "lines": [
+    {
+     "sku": "EBOOK-01",
+     "qty": 1
+    },
+    {
+     "sku": "APP-PHOTO",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 0
+    },
+    "rules": [
+     "DIGITAL.EXEMPT",
+     "DIGITAL.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G21",
+   "why": "WI digital downloads taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "WI",
+    "zip": "53004"
+   },
+   "lines": [
+    {
+     "sku": "EBOOK-01",
+     "qty": 1
+    },
+    {
+     "sku": "ALBUM-01",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 226,
+    "collector": "seller",
+    "lines": {
+     "L1": 89,
+     "L2": 137
+    },
+    "rules": [
+     "DIGITAL.TAXABLE",
+     "DIGITAL.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G22",
+   "why": "TX SaaS taxed on 80% of the price",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "TX",
+    "zip": "75001"
+   },
+   "lines": [
+    {
+     "sku": "SAAS-STOR",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 733,
+    "collector": "seller",
+    "lines": {
+     "L1": 733
+    },
+    "rules": [
+     "SAAS.PARTIAL"
+    ]
+   }
+  },
+  {
+   "id": "G23",
+   "why": "CT SaaS at a reduced state rate",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CT",
+    "zip": "06001"
+   },
+   "lines": [
+    {
+     "sku": "SAAS-STOR",
+     "qty": 1
+    },
+    {
+     "sku": "SAAS-EDIT",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 114,
+    "collector": "seller",
+    "lines": {
+     "L1": 99,
+     "L2": 15
+    },
+    "rules": [
+     "SAAS.REDUCED",
+     "SAAS.REDUCED"
+    ]
+   }
+  },
+  {
+   "id": "G24",
+   "why": "NY SaaS fully taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NY",
+    "zip": "10003"
+   },
+   "lines": [
+    {
+     "sku": "SAAS-STOR",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 718,
+    "collector": "seller",
+    "lines": {
+     "L1": 718
+    },
+    "rules": [
+     "SAAS.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G25",
+   "why": "MN SaaS not taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MN",
+    "zip": "55001"
+   },
+   "lines": [
+    {
+     "sku": "SAAS-STOR",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "SAAS.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G26",
+   "why": "WA installation taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "WA",
+    "zip": "98006"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 1
+    },
+    {
+     "sku": "SVC-MOUNT",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 4712,
+    "collector": "seller",
+    "lines": {
+     "L1": 3713,
+     "L2": 999
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "INSTALL.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G27",
+   "why": "GA separately stated installation exempt",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "GA",
+    "zip": "30001"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 1
+    },
+    {
+     "sku": "SVC-MOUNT",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 4191,
+    "collector": "seller",
+    "lines": {
+     "L1": 4191,
+     "L2": 0
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "INSTALL.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G28",
+   "why": "NJ shipping taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NJ",
+    "zip": "07001"
+   },
+   "lines": [
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 299,
+    "collector": "seller",
+    "lines": {
+     "L1": 259,
+     "SHIPPING": 40
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "SHIPPING.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G29",
+   "why": "ME shipping exempt, handling taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "ME",
+    "zip": "04001"
+   },
+   "lines": [
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 199,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 212,
+    "collector": "seller",
+    "lines": {
+     "L1": 203,
+     "SHIPPING": 0,
+     "HANDLING": 9
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "SHIPPING.EXEMPT",
+     "HANDLING.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G30",
+   "why": "MI shipping taxable in the share of taxable items",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MI",
+    "zip": "48001"
+   },
+   "lines": [
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    },
+    {
+     "sku": "RX-REFILL",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 319,
+    "collector": "seller",
+    "lines": {
+     "L1": 293,
+     "L2": 0,
+     "SHIPPING": 26
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "RX.EXEMPT",
+     "SHIPPING.PROPORTIONAL"
+    ]
+   }
+  },
+  {
+   "id": "G31",
+   "why": "RI proportional shipping with an exempt clothing item",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "RI",
+    "zip": "02801"
+   },
+   "lines": [
+    {
+     "sku": "TEE-01",
+     "qty": 1
+    },
+    {
+     "sku": "LAMP-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 258,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 230,
+     "SHIPPING": 28
+    },
+    "rules": [
+     "CLOTH.UNDER_THRESHOLD",
+     "GEN.TAXABLE",
+     "SHIPPING.PROPORTIONAL"
+    ]
+   }
+  },
+  {
+   "id": "G32",
+   "why": "CA shipping exempt, handling taxable",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CA",
+    "zip": "90002"
+   },
+   "lines": [
+    {
+     "sku": "SKIL-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 199,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 423,
+    "collector": "seller",
+    "lines": {
+     "L1": 406,
+     "SHIPPING": 0,
+     "HANDLING": 17
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "SHIPPING.EXEMPT",
+     "HANDLING.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G33",
+   "why": "FL marketplace sale: the marketplace collects",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "marketplace",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "marketplace",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "COLLECT.MARKETPLACE"
+    ]
+   }
+  },
+  {
+   "id": "G34",
+   "why": "MO marketplace sale before the facilitator rule: seller collects",
+   "date": "2025-12-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MO",
+    "zip": "63001"
+   },
+   "lines": [
+    {
+     "sku": "LAMP-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "marketplace",
+   "ship_from": null,
+   "expected": {
+    "tax": 300,
+    "collector": "seller",
+    "lines": {
+     "L1": 300
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G35",
+   "why": "MO marketplace sale after the facilitator rule",
+   "date": "2026-01-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "MO",
+    "zip": "63001"
+   },
+   "lines": [
+    {
+     "sku": "LAMP-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "marketplace",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "marketplace",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "COLLECT.MARKETPLACE"
+    ]
+   }
+  },
+  {
+   "id": "G36",
+   "why": "OR has no sales tax",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "OR",
+    "zip": "97001"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "none",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "COLLECT.NO_SALES_TAX"
+    ]
+   }
+  },
+  {
+   "id": "G37",
+   "why": "FL back to school holiday: clothing under the cap",
+   "date": "2026-08-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "JEAN-01",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "HOLIDAY.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G38",
+   "why": "FL holiday: clothing over the cap is taxable",
+   "date": "2026-08-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "COAT-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2179,
+    "collector": "seller",
+    "lines": {
+     "L1": 2179
+    },
+    "rules": [
+     "CLOTH.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G39",
+   "why": "FL holiday: laptop under the computer cap",
+   "date": "2026-08-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "LAPT-14",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "HOLIDAY.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G40",
+   "why": "AL holiday: state exempt, local taxes still apply",
+   "date": "2026-07-18",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "AL",
+    "zip": "35001"
+   },
+   "lines": [
+    {
+     "sku": "JEAN-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 204,
+    "collector": "seller",
+    "lines": {
+     "L1": 204
+    },
+    "rules": [
+     "HOLIDAY.STATE_ONLY"
+    ]
+   }
+  },
+  {
+   "id": "G41",
+   "why": "SC holiday with no item cap",
+   "date": "2026-08-08",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "SC",
+    "zip": "29004"
+   },
+   "lines": [
+    {
+     "sku": "LAPT-14",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "HOLIDAY.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G42",
+   "why": "FL disaster preparedness holiday: generator",
+   "date": "2026-06-05",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "GENR-01",
+     "qty": 1
+    },
+    {
+     "sku": "FLSH-01",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 0
+    },
+    "rules": [
+     "HOLIDAY.EXEMPT",
+     "HOLIDAY.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G43",
+   "why": "Resale certificate covers NY",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NY",
+    "zip": "10001"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G1",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CERT.RESALE"
+    ]
+   }
+  },
+  {
+   "id": "G44",
+   "why": "Resale certificate does not cover NJ",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NJ",
+    "zip": "07001"
+   },
+   "lines": [
+    {
+     "sku": "TV-55",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G1",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2754,
+    "collector": "seller",
+    "lines": {
+     "L1": 2754
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G45",
+   "why": "Expired certificate: OH sale after expiry is taxed",
+   "date": "2026-04-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "OH",
+    "zip": "43001"
+   },
+   "lines": [
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G2",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2004,
+    "collector": "seller",
+    "lines": {
+     "L1": 2004
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G46",
+   "why": "Same OH certificate before expiry",
+   "date": "2026-03-15",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "OH",
+    "zip": "43001"
+   },
+   "lines": [
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G2",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CERT.RESALE"
+    ]
+   }
+  },
+  {
+   "id": "G47",
+   "why": "CA does not accept nonprofit certificates (illustrative)",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "CA",
+    "zip": "90001"
+   },
+   "lines": [
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G3",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2233,
+    "collector": "seller",
+    "lines": {
+     "L1": 2233
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G48",
+   "why": "OH accepts the same nonprofit certificate",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "OH",
+    "zip": "43001"
+   },
+   "lines": [
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G3",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CERT.NONPROFIT"
+    ]
+   }
+  },
+  {
+   "id": "G49",
+   "why": "Pending certificate: taxed until validated",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "GA",
+    "zip": "30001"
+   },
+   "lines": [
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G4",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2004,
+    "collector": "seller",
+    "lines": {
+     "L1": 2004
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G50",
+   "why": "NC state rate change on Jan 1: before",
+   "date": "2025-12-31",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NC",
+    "zip": "27001"
+   },
+   "lines": [
+    {
+     "sku": "DESK-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2792,
+    "collector": "seller",
+    "lines": {
+     "L1": 2792
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G51",
+   "why": "NC state rate change on Jan 1: after",
+   "date": "2026-01-01",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "NC",
+    "zip": "27001"
+   },
+   "lines": [
+    {
+     "sku": "DESK-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 2879,
+    "collector": "seller",
+    "lines": {
+     "L1": 2879
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G52",
+   "why": "KS city rate change on Jul 1 (correct rate, even though production loaded it Jul 8)",
+   "date": "2026-07-03",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "KS",
+    "zip": "66001"
+   },
+   "lines": [
+    {
+     "sku": "DESK-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 3839,
+    "collector": "seller",
+    "lines": {
+     "L1": 3839
+    },
+    "rules": [
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G53",
+   "why": "Government certificate in FL",
+   "date": "2026-03-10",
+   "ship_to": {
+    "street": "250 Oak Ave",
+    "state": "FL",
+    "zip": "33001"
+   },
+   "lines": [
+    {
+     "sku": "GENR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": "G5",
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 0,
+    "collector": "seller",
+    "lines": {
+     "L1": 0
+    },
+    "rules": [
+     "CERT.GOVERNMENT"
+    ]
+   }
+  },
+  {
+   "id": "G54",
+   "why": "seeded mixed cart",
+   "date": "2026-09-12",
+   "ship_to": {
+    "street": "932 Oak Ave",
+    "state": "RI",
+    "zip": "02806"
+   },
+   "lines": [
+    {
+     "sku": "SWTR-01",
+     "qty": 3
+    },
+    {
+     "sku": "TAB-11",
+     "qty": 3
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 5675,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 5675
+    },
+    "rules": [
+     "CLOTH.UNDER_THRESHOLD",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G55",
+   "why": "seeded mixed cart",
+   "date": "2026-04-15",
+   "ship_to": {
+    "street": "469 Main St",
+    "state": "GA",
+    "zip": "30002"
+   },
+   "lines": [
+    {
+     "sku": "FLSH-01",
+     "qty": 2
+    },
+    {
+     "sku": "CHAIR-01",
+     "qty": 1
+    },
+    {
+     "sku": "CHAIR-01",
+     "qty": 2
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 6449,
+    "collector": "seller",
+    "lines": {
+     "L1": 437,
+     "L2": 2004,
+     "L3": 4008
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G56",
+   "why": "seeded mixed cart",
+   "date": "2026-09-14",
+   "ship_to": {
+    "street": "900 Main St",
+    "state": "NM",
+    "zip": "87004"
+   },
+   "lines": [
+    {
+     "sku": "RX-REFILL",
+     "qty": 3
+    },
+    {
+     "sku": "SOCK-06",
+     "qty": 1
+    },
+    {
+     "sku": "SAAS-EDIT",
+     "qty": 2
+    },
+    {
+     "sku": "GENR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 6999,
+    "collector": "seller",
+    "lines": {
+     "L1": 0,
+     "L2": 141,
+     "L3": 303,
+     "L4": 6555
+    },
+    "rules": [
+     "RX.EXEMPT",
+     "CLOTH.TAXABLE",
+     "SAAS.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G57",
+   "why": "seeded mixed cart",
+   "date": "2026-02-27",
+   "ship_to": {
+    "street": "1583 Harbor Rd",
+    "state": "ND",
+    "zip": "58001"
+   },
+   "lines": [
+    {
+     "sku": "TAB-11",
+     "qty": 1
+    },
+    {
+     "sku": "SAAS-STOR",
+     "qty": 3
+    },
+    {
+     "sku": "LAPT-14",
+     "qty": 1
+    },
+    {
+     "sku": "COFF-2",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 199,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 9586,
+    "collector": "seller",
+    "lines": {
+     "L1": 2550,
+     "L2": 0,
+     "L3": 6967,
+     "L4": 0,
+     "SHIPPING": 54,
+     "HANDLING": 15
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "SAAS.EXEMPT",
+     "GEN.TAXABLE",
+     "GROC.EXEMPT",
+     "SHIPPING.TAXABLE",
+     "HANDLING.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G58",
+   "why": "seeded mixed cart",
+   "date": "2026-04-18",
+   "ship_to": {
+    "street": "1313 Harbor Rd",
+    "state": "MD",
+    "zip": "21003"
+   },
+   "lines": [
+    {
+     "sku": "MOUNT-01",
+     "qty": 1
+    },
+    {
+     "sku": "SKIL-01",
+     "qty": 2
+    },
+    {
+     "sku": "GENR-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 5461,
+    "collector": "seller",
+    "lines": {
+     "L1": 472,
+     "L2": 608,
+     "L3": 4381
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  },
+  {
+   "id": "G59",
+   "why": "seeded mixed cart",
+   "date": "2026-07-03",
+   "ship_to": {
+    "street": "774 Main St",
+    "state": "IL",
+    "zip": "60604"
+   },
+   "lines": [
+    {
+     "sku": "TAB-11",
+     "qty": 2
+    },
+    {
+     "sku": "JEAN-01",
+     "qty": 2
+    },
+    {
+     "sku": "JKT-01",
+     "qty": 3
+    },
+    {
+     "sku": "RX-PEN",
+     "qty": 1
+    }
+   ],
+   "shipping": 699,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 6909,
+    "collector": "seller",
+    "lines": {
+     "L1": 3849,
+     "L2": 796,
+     "L3": 2264,
+     "L4": 0,
+     "SHIPPING": 0
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "CLOTH.TAXABLE",
+     "CLOTH.TAXABLE",
+     "RX.EXEMPT",
+     "SHIPPING.EXEMPT"
+    ]
+   }
+  },
+  {
+   "id": "G60",
+   "why": "seeded mixed cart",
+   "date": "2026-10-16",
+   "ship_to": {
+    "street": "873 Main St",
+    "state": "SD",
+    "zip": "57004"
+   },
+   "lines": [
+    {
+     "sku": "LAPT-14",
+     "qty": 2
+    },
+    {
+     "sku": "MOUNT-01",
+     "qty": 2
+    },
+    {
+     "sku": "MOUNT-01",
+     "qty": 1
+    }
+   ],
+   "shipping": 0,
+   "handling": 0,
+   "customer_id": null,
+   "channel": "direct",
+   "ship_from": null,
+   "expected": {
+    "tax": 17269,
+    "collector": "seller",
+    "lines": {
+     "L1": 15463,
+     "L2": 1204,
+     "L3": 602
+    },
+    "rules": [
+     "GEN.TAXABLE",
+     "GEN.TAXABLE",
+     "GEN.TAXABLE"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,62 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Lint
+        run: uvx ruff check .
+      - name: Test
+        run: uv run --python 3.12 --group dev pytest -q
+
+  golden-carts:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Recompute every golden cart and fail on any one cent difference
+        run: uv run --python 3.12 taxengine gate --golden golden/carts.json
+      - name: Simulate the year and export one state return
+        run: |
+          mkdir -p data/exports
+          uv run --python 3.12 taxengine --cache data/cache simulate
+          uv run --python 3.12 taxengine --cache data/cache reconcile
+          uv run --python 3.12 taxengine --cache data/cache export TX 2026-03 --out data/exports/return-TX-2026-03.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: return-TX-2026-03
+          path: data/exports/return-TX-2026-03.csv
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: tax-engine:ci
+      - name: Smoke test the image
+        run: |
+          docker run -d --name api -p 8877:8877 tax-engine:ci
+          for i in $(seq 1 60); do curl -sf localhost:8877/healthz && break; sleep 1; done
+          curl -sf -X POST localhost:8877/v1/tax/calculate -H 'content-type: application/json' \
+            -d '{"date":"2026-03-10","ship_to":{"state":"NY","zip":"10002","street":"120 Main St"},"lines":[{"sku":"COAT-01"}],"nexus":"all"}'
+          curl -sf localhost:8877/v1/nexus | head -c 300
+          curl -sf "localhost:8877/v1/returns/TX/2026-03?format=csv" | head -3
+          curl -sf localhost:8877/metrics | grep taxengine_audit_rows
+          docker rm -f api
+      - name: Golden gate runs inside the image
+        run: docker run --rm tax-engine:ci gate --golden /app/golden/carts.json
